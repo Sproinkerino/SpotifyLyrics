@@ -52,7 +52,7 @@ class LyricTimer:
                 if tt >= pp:
                     if first:
                         print(song_name)
-                        time.sleep(max(time_list[i] - (tt - pp), 0))
+                        time.sleep(max(time_list[i] - (tt - pp) -0.5, 0))
                     else:
                         time.sleep(max(time_list[i], 0))
                     # os.system('cls')
