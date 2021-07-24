@@ -55,7 +55,8 @@ class LyricTimer:
                         time.sleep(max(time_list[i] - (tt - pp), 0))
                     else:
                         time.sleep(max(time_list[i], 0))
-                    os.system('cls')
+                    # os.system('cls')
+                    os.system('clear')
                     if (i -1) >= 0:
                         print('\n' + textwrap.fill(lyric_list[i -1], 30))
                     print(f"{Red}"+textwrap.fill(lyric_list[i], 30) + f"{Color_Off}")
@@ -83,7 +84,7 @@ class LyricTimer:
 
                 time_list.append((tf - pt) * 1.0 / 1000)
 
-                lyrics_list.append(x[11:])
+                lyrics_list.append(x.split(']')[1])
                 pt = tf
 
         return time_list, lyrics_list
