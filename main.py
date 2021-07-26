@@ -21,7 +21,7 @@ def get_spotify_current():
     song_name = results['item']['name']
     artist = results['item']['artists'][0]['name']
     search = song_name + ', ' + artist
-    return search, results['progress_ms'] * 1.0 / 1000
+    return search, results['progress_ms'] * 1.0 / 1000 ,results['item']['duration_ms'] * 1.0/1000
 
 
 class LyricTimer:
@@ -29,15 +29,15 @@ class LyricTimer:
         self.starttime = datetime.now()
         pass
 
-    def print_song(self, song_name, progress=0):
-
+    def print_song(self, song_name, progress=0, duration =0):
+        print("Searching Lyrics")
         lrc = Lyrics().run(song_name)
         # delay = 5
 
         if lrc is not None:
             time_list, lyric_list = self.parse_lyrics(lrc)
             first = True
-            delay = (datetime.now() - self.starttime).seconds
+            delay = (datetime.now() - self.starttime).microseconds / 1000000
             # print(delay)
             progress = progress + delay
 
@@ -51,19 +51,22 @@ class LyricTimer:
 
                 if tt >= pp:
                     if first:
-                        print(song_name)
+
                         time.sleep(max(time_list[i] - (tt - pp) -0.5, 0))
                     else:
                         time.sleep(max(time_list[i], 0))
                     os.system('cls' if os.name == 'nt' else 'clear')
+                    print(f"{On_Blue}" + song_name + " " + f"{Color_Off}" + "\n")
                     #os.system('clear')
                     if (i -1) >= 0:
-                        print('\n' + textwrap.fill(lyric_list[i -1], 30))
-                    print(f"{Red}"+textwrap.fill(lyric_list[i], 30) + f"{Color_Off}")
+                        print('\n' + textwrap.fill(lyric_list[i -1], 30) + "\n")
+                    print(f"{Red}"+textwrap.fill(lyric_list[i], 30) + f"{Color_Off}" )
                     if (i + 1) <= (len(lyric_list) - 1):
                         print('\n' + textwrap.fill(lyric_list[i + 1], 20))
+                    if (i + 2) <= (len(lyric_list) - 2):
+                        print('\n' + textwrap.fill(lyric_list[i + 1], 20))
                 first = False
-
+            time.sleep(duration - tt)
         else:
             print("Lyrics not found.")
             time.sleep(10)
@@ -85,6 +88,7 @@ class LyricTimer:
                 time_list.append((tf - pt) * 1.0 / 1000)
 
                 lyrics_list.append(x.split(']')[1])
+                # lyrics_list.append(x)
                 pt = tf
 
         return time_list, lyrics_list
@@ -92,5 +96,7 @@ class LyricTimer:
 
 if __name__ == '__main__':
     while True:
-        song_name, progress = get_spotify_current()
-        LyricTimer().print_song(song_name, progress)
+        print("Query Spotify...")
+        song_name, progress , duration = get_spotify_current()
+        LyricTimer().print_song(song_name, progress, duration)
+
