@@ -63,8 +63,8 @@ class LyricTimer:
                     print(f"{Red}"+textwrap.fill(lyric_list[i], 30) + f"{Color_Off}" )
                     if (i + 1) <= (len(lyric_list) - 1):
                         print('\n' + textwrap.fill(lyric_list[i + 1], 20))
-                    if (i + 2) <= (len(lyric_list) - 2):
-                        print('\n' + textwrap.fill(lyric_list[i + 1], 20))
+                    # if (i + 2) <= (len(lyric_list) - 2):
+                    #     print('\n' + textwrap.fill(lyric_list[i + 1], 20))
                 first = False
             time.sleep(duration - tt)
         else:
