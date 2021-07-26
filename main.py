@@ -32,14 +32,14 @@ class LyricTimer:
     def print_song(self, song_name, progress=0):
 
         lrc = Lyrics().run(song_name)
-        delay = 5
+        # delay = 5
 
         if lrc is not None:
             time_list, lyric_list = self.parse_lyrics(lrc)
             first = True
             delay = (datetime.now() - self.starttime).seconds
             # print(delay)
-            # progress = progress +
+            progress = progress + delay
 
 
             pp = progress
@@ -55,8 +55,8 @@ class LyricTimer:
                         time.sleep(max(time_list[i] - (tt - pp) -0.5, 0))
                     else:
                         time.sleep(max(time_list[i], 0))
-                    # os.system('cls')
-                    os.system('clear')
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    #os.system('clear')
                     if (i -1) >= 0:
                         print('\n' + textwrap.fill(lyric_list[i -1], 30))
                     print(f"{Red}"+textwrap.fill(lyric_list[i], 30) + f"{Color_Off}")
