@@ -103,5 +103,5 @@ if __name__ == '__main__':
         print("Query Spotify...")
         song_name, progress , duration = get_spotify_current()
         LyricTimer().print_song(song_name, progress, duration)
-        time.sleep(0.5)
+        time.sleep(5 )
 
