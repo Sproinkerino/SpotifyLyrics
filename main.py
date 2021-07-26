@@ -33,12 +33,15 @@ class LyricTimer:
         print("Searching Lyrics")
         lrc = Lyrics().run(song_name)
         # delay = 5
+        song_name, progress, duration = get_spotify_current()
+        print(progress)
 
         if lrc is not None:
             time_list, lyric_list = self.parse_lyrics(lrc)
             first = True
             delay = (datetime.now() - self.starttime).microseconds / 1000000
-            # print(delay)
+            delay = 0
+
             progress = progress + delay
 
 
@@ -49,10 +52,11 @@ class LyricTimer:
                 time_paused = time_list[i]
                 tt = tt + time_paused
 
+
                 if tt >= pp:
                     if first:
-
-                        time.sleep(max(time_list[i] - (tt - pp) -0.5, 0))
+                        first = False
+                        time.sleep(max((tt - pp) , 0))
                     else:
                         time.sleep(max(time_list[i], 0))
                     os.system('cls' if os.name == 'nt' else 'clear')
@@ -65,7 +69,7 @@ class LyricTimer:
                         print('\n' + textwrap.fill(lyric_list[i + 1], 20))
                     # if (i + 2) <= (len(lyric_list) - 2):
                     #     print('\n' + textwrap.fill(lyric_list[i + 1], 20))
-                first = False
+
             time.sleep(duration - tt)
         else:
             print("Lyrics not found.")
@@ -99,4 +103,5 @@ if __name__ == '__main__':
         print("Query Spotify...")
         song_name, progress , duration = get_spotify_current()
         LyricTimer().print_song(song_name, progress, duration)
+        time.sleep(0.5)
 
